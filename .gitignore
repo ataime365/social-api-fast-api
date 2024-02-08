@@ -1,0 +1,4 @@
+venv
+.env
+rough*.py
+__pycache__
