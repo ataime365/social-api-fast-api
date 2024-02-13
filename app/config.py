@@ -19,6 +19,6 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 settings = Settings()
-print(settings.db_username, "username")
+# print(settings.db_username, "username")
 
 

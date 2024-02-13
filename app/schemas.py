@@ -2,6 +2,7 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import Optional
+from pydantic.types import conint
 
 class PostBase(BaseModel):
     title: str
@@ -38,6 +39,22 @@ class PostResponse(PostBase): #Returning to the frontend #Out
         # orm_mode = True #* 'orm_mode' has been renamed to 'from_attributes'
         from_attributes = True
 
+class PostResponseNoOwnerDetails(PostBase): #Returning to the frontend #Out
+    """For Sending data back, didnt later use this"""
+    id: int
+    created_at: datetime
+    owner_id: int
+
+    class Config:
+        # orm_mode = True #* 'orm_mode' has been renamed to 'from_attributes'
+        from_attributes = True
+
+class PostWithVoteCount(BaseModel):
+    """This is for the Post with count, complex sql query output result, different"""
+    post: PostResponse
+    votes_count: int
+
+
 class UserLogin(BaseModel):
     email : EmailStr #for email validator
     password : str
@@ -52,6 +69,10 @@ class TokenData(BaseModel):
     # user_id: Optional[str] = None
     id: Optional[str] = None
     # exp: datetime
+
+class Vote(BaseModel):
+    post_id: int
+    vote_dir: conint(le=1) # 0,1  #or Annotated[int, range(0, 2)]
 
 # class PostBase(BaseModel): #Dont inherit from the PostBase model, since it is only published field we want to update
 #     published: bool
