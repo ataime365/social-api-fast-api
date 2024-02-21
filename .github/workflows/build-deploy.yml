@@ -33,16 +33,6 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Print environment variables
-        run: |
-          echo "POSTGRES_HOST=$POSTGRES_HOST"
-          echo "POSTGRES_PORT=$POSTGRES_PORT"
-          echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" # Be cautious with sensitive data
-          echo "POSTGRES_DB=$POSTGRES_DB"
-          echo "POSTGRES_USER=$POSTGRES_USER"
-          echo "SECRET_KEY=$SECRET_KEY" # Be cautious with sensitive data
-          echo "ALGORITHM=$ALGORITHM"
-          echo "ACCESS_TOKEN_EXPIRE_MINUTES=$ACCESS_TOKEN_EXPIRE_MINUTES"
       - name: pulling git repo
         uses: actions/checkout@v2
       - name: Install python version 3.9
