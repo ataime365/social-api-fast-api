@@ -1,5 +1,5 @@
 # Pydantic models acts as Serializers
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, validator, field_validator
 from datetime import datetime
 from typing import Optional
 from pydantic.types import conint
@@ -72,7 +72,14 @@ class TokenData(BaseModel):
 
 class Vote(BaseModel):
     post_id: int
-    vote_dir: conint(le=1) # 0,1  #or Annotated[int, range(0, 2)]
+    vote_dir: int    # conint(le=1) # 0,1  #or Annotated[int, range(0, 2)]
+
+    @field_validator('vote_dir')
+    def check_vote_dir(cls, v):
+        if v not in (0, 1):
+            raise ValueError('vote_dir must be 0 or 1')
+        return v
+    
 
 # class PostBase(BaseModel): #Dont inherit from the PostBase model, since it is only published field we want to update
 #     published: bool

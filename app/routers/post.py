@@ -57,17 +57,18 @@ async def get_post(id: int, db: Session = Depends(get_db),
                         .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True) \
                         .group_by(models.Post.id) \
                             .filter(models.Post.id==id).first()
+        
+    # post = db.query(models.Post).filter_by(id=id).first() #This also works, but it is less flexible
+    if not post:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
     
     # dictionary comprehension
     filtered_post_owner = {key: value for key, value in post[0].owner.__dict__.items() if not key.startswith('_')}
     schemas.PostResponse.owner = filtered_post_owner # I Had to add the owner by myself
     #main
     filtered_post_data = {key: value for key, value in post[0].__dict__.items() if not key.startswith('_')} #_sa_instance_state
-    s_post = {'post': filtered_post_data, 'votes_count': post[1] }
     
-    # post = db.query(models.Post).filter_by(id=id).first() #This also works, but it is less flexible
-    if not post:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
+    s_post = {'post': filtered_post_data, 'votes_count': post[1] }
     return s_post # FastApi automatically serializes the data to json format
 
 

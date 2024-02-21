@@ -1,5 +1,5 @@
 venv
-.env
+.env*
 rough*.py
 social_fast_ap*
 __pycache__

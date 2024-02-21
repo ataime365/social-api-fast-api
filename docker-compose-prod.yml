@@ -1,0 +1,37 @@
+version: "3.9" #docker compose file
+
+services:      
+  api:
+    build: .  #image: ataime15/fastapi_social
+    volumes:
+      - ./:/usr/src/app:ro #mapping the root local directory to the /usr/src/app docker directory #For only local development
+    #   - static_volume:/app/staticfiles # : is mapping
+    #   - media_volume:/app/mediafiles
+    # command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "80:8000"
+    # expose:
+    #   - "8000"
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - postgres
+    #   - mailhog
+    #   - redis
+    #   - elasticsearch
+    # networks:
+    #   - authors-api #we want all our services to run on the same network
+
+  postgres:
+    image: postgres
+    env_file: 
+      - ./.env.dev
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data #mapping #This is where postgres stores its data by default
+
+
+volumes:
+  local_postgres_data: {}
+
+
+
